@@ -1,0 +1,127 @@
+# programa-ojogodecorrida
+jogo de corrida feito usando o javascript
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Corrida</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #e0f7fa;
+        }
+        .game-container {
+            position: relative;
+            width: 600px;
+            height: 200px;
+            border: 3px solid #000;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .track {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #ccc;
+            top: 0;
+        }
+        .car {
+            position: absolute;
+            bottom: 10px;
+            width: 40px;
+            height: 40px;
+            background-color: red;
+            transition: left 0.1s linear;
+        }
+        .car2 {
+            position: absolute;
+            bottom: 10px;
+            width: 40px;
+            height: 40px;
+            background-color: blue;
+            transition: left 0.1s linear;
+        }
+        .finish-line {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 10px;
+            height: 100%;
+            background-color: green;
+        }
+        p {
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <div class="track"></div>
+        <div class="car" id="car1"></div>
+        <div class="car2" id="car2"></div>
+        <div class="finish-line"></div>
+    </div>
+
+    <p id="message">Pressione qualquer tecla para acelerar!</p>
+
+    <script src="game.js"></script>
+</body>
+</html>
+// Inicializa as variáveis
+let car1 = document.getElementById("car1");
+let car2 = document.getElementById("car2");
+let finishLine = document.querySelector(".finish-line");
+let message = document.getElementById("message");
+
+// Posições iniciais dos carros
+let car1Position = 0;
+let car2Position = 0;
+let raceInProgress = false; // Flag para controlar o início da corrida
+
+// Função para mover os carros
+function moveCar(car, position) {
+    car.style.left = position + "px";
+}
+
+// Função para verificar se algum carro cruzou a linha de chegada
+function checkWinner() {
+    if (car1Position >= finishLine.offsetLeft - car1.offsetWidth) {
+        message.textContent = "Carro 1 venceu a corrida!";
+        raceInProgress = false;
+    } else if (car2Position >= finishLine.offsetLeft - car2.offsetWidth) {
+        message.textContent = "Carro 2 venceu a corrida!";
+        raceInProgress = false;
+    }
+}
+
+// Função para iniciar ou continuar a corrida
+function startRace(event) {
+    if (!raceInProgress) {
+        raceInProgress = true;
+        message.textContent = "Corrida iniciada! Pressione qualquer tecla para acelerar.";
+    }
+
+    // Aumenta a posição dos carros a cada tecla pressionada
+    if (raceInProgress) {
+        car1Position += Math.random() * 5; // Carro 1 anda com um valor aleatório entre 0 e 5 pixels
+        car2Position += Math.random() * 5; // Carro 2 também
+
+        moveCar(car1, car1Position);
+        moveCar(car2, car2Position);
+
+        checkWinner(); // Verifica se algum carro ganhou
+    }
+}
+
+// Detecta a pressão de qualquer tecla
+document.addEventListener("keydown", startRace);
