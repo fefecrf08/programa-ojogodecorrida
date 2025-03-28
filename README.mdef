@@ -125,3 +125,4 @@ function startRace(event) {
 
 // Detecta a pressão de qualquer tecla
 document.addEventListener("keydown", startRace);
+.nojekyll
